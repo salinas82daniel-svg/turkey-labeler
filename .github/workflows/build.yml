@@ -1,0 +1,35 @@
+name: Build EXE
+
+on:
+  workflow_dispatch:   # allows manual trigger
+  push:                # also runs when you push new code
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller pyserial reportlab pillow
+
+      - name: Build EXE
+        run: |
+          pyinstaller --onefile --noconsole ^
+            --collect-all reportlab ^
+            --add-data "templates;templates" ^
+            LD_Turkey_Labeler.py
+
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: LD_Turkey_Labeler
+          path: dist/LD_Turkey_Labeler.exe
