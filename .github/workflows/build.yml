@@ -1,9 +1,8 @@
-name: Build EXE (Windows)
+name: Build Windows EXE
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -11,7 +10,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -22,20 +21,14 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller reportlab pillow pyserial
+          pip install pyserial reportlab pillow pyinstaller
 
-      - name: Build EXE
-        run: pyinstaller --onefile --noconsole --name LD_Turkey_Labeler --collect-all reportlab --add-data "templates;templates" Ver.py
-
-      - name: Package ZIP
+      - name: Build EXE with PyInstaller
         run: |
-          mkdir package
-          copy dist\LD_Turkey_Labeler.exe package\
-          xcopy templates package\templates\ /E /I /Y
-          powershell Compress-Archive -Path package\* -DestinationPath LD_Turkey_Labeler.zip
+          pyinstaller --onefile --noconsole --name LD_Turkey_Labeler --collect-all reportlab --add-data "templates;templates" ver.py
 
-      - name: Upload artifact (ZIP)
+      - name: Upload EXE artifact
         uses: actions/upload-artifact@v4
         with:
           name: LD_Turkey_Labeler
-          path: LD_Turkey_Labeler.zip
+          path: dist/LD_Turkey_Labeler.exe
