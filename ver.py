@@ -607,7 +607,7 @@ class App:
             try:
                 if serial is None: raise RuntimeError('pyserial not installed')
                 send_prn_to_printer(self.settings.get('printer_port','COM1'), self.settings.get('printer_baud',38400), prn)
-                messagebox.showinfo('Printed', f'PRN sent to {self.settings.get("printer_port","COM1")}')
+                messagebox.showinfo('Printed', f"PRN sent to {self.settings.get("printer_port","COM1")}')
             except Exception as e:
                 messagebox.showerror('Printer Error', str(e))
             return
@@ -626,7 +626,7 @@ class App:
         try:
             if serial is None: raise RuntimeError('pyserial not installed')
             send_prn_to_printer(self.settings.get('printer_port','COM1'), self.settings.get('printer_baud',38400), datamax_cmds)
-            messagebox.showinfo('Printed', f'PDF saved and Datamax commands sent to {self.settings.get('printer_port','COM1')}')
+            messagebox.showinfo('Printed', f"PDF saved and Datamax commands sent to {self.settings.get('printer_port','COM1')}')
         except Exception as e:
             messagebox.showerror('Printer Error', str(e))
 
