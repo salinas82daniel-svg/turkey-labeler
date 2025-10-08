@@ -1,0 +1,9 @@
+N
+A30,20,0,3,1,1,N,"{product_name}"
+A30,60,0,3,1,1,N,"Weight: {weight} lb"
+A30,100,0,3,1,1,N,"Price/lb: ${price_per_lb}"
+A30,140,0,3,1,1,N,"Total: ${total_price}"
+A30,180,0,3,1,1,N,"Sell by: {sell_by}"
+A30,220,0,3,1,1,N,"Lot: {lot}"
+B30,260,0,E30,2,2,100,N,"{upc}"
+P1
