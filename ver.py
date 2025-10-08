@@ -96,17 +96,18 @@ def save_settings(data):
 def init_db():
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
-    c.execute('''
-    CREATE TABLE IF NOT EXISTS products (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        product_code TEXT,
-        name TEXT,
-        price_per_lb REAL,
-        lot_number TEXT,
-        plu TEXT,
-        tare REAL
-    )
-    ''')
+    c.execute('''CREATE TABLE IF NOT EXISTS products (
+                    id INTEGER PRIMARY KEY,
+                    product_code TEXT UNIQUE,
+                    name TEXT,
+                    price_per_lb REAL
+                 )''')
+    # Add missing columns
+    cols = [r[1] for r in c.execute("PRAGMA table_info(products)").fetchall()]
+    if 'tare' not in cols:
+        c.execute("ALTER TABLE products ADD COLUMN tare REAL DEFAULT 0.0")
+    if 'plu_upc' not in cols:
+        c.execute("ALTER TABLE products ADD COLUMN plu_upc TEXT")
     conn.commit()
     conn.close()
 
