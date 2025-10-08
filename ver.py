@@ -23,6 +23,15 @@ def resource_path(rel_path):
     return os.path.join(base, rel_path)
 
 
+# optional serial/list_ports
+try:
+    import serial
+    from serial.tools import list_ports
+except Exception:
+    serial = None
+    list_ports = None
+
+
 def ensure_templates():
     if not os.path.exists(TEMPLATES_DIR):
         os.makedirs(TEMPLATES_DIR)
