@@ -781,26 +781,35 @@ class App:
         ProductManager(self.root, refresh_cb=self.reload_products)
 
     def on_close(self):
-        # Save current settings before exit
-        self.settings['last_port'] = self.port_var.get()
-        self.settings['last_template'] = self.template_var.get()
-        self.settings['printer_port'] = self.printer_port_var.get()
-        self.settings['printer_baud'] = self.printer_baud_var.get()
-        self.settings['format_mode'] = self.format_mode_var.get()
-        self.settings['templates_dir'] = TEMPLATES_DIR
-
-        save_settings(self.settings)
+        try:
+            # Save settings
+            self.settings['last_port'] = self.port_var.get()
+            self.settings['last_template'] = self.template_var.get()
+            self.settings['printer_port'] = self.printer_port_var.get()
+            self.settings['printer_baud'] = self.printer_baud_var.get()
+            self.settings['format_mode'] = self.format_mode_var.get()
+            self.settings['templates_dir'] = TEMPLATES_DIR
+            save_settings(self.settings)
+        except Exception as e:
+            print("Settings save error:", e)
 
         try:
-            self.scale.stop()
-        except Exception:
-            pass
-        try:
-            self.conn.close()
-        except Exception:
-            pass
+            if hasattr(self, "scale"):
+                self.scale.stop()
+        except Exception as e:
+            print("Scale stop error:", e)
 
-        self.root.destroy()
+        try:
+            if hasattr(self, "conn"):
+                self.conn.close()
+        except Exception as e:
+            print("DB close error:", e)
+
+        # Always force destroy
+        try:
+            self.root.destroy()
+        except Exception:
+            pass
 
 
 # --- main ---
