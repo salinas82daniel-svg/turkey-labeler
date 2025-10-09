@@ -50,7 +50,10 @@ except Exception:
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 DB_FILE = os.path.join(BASE_DIR, "products.db")
-SETTINGS_FILE = os.path.join(BASE_DIR, "settings.json")
+SETTINGS_DIR = os.path.join(os.path.expanduser("~"), "AppData", "Roaming", "LD_Turkey_Labeler")
+os.makedirs(SETTINGS_DIR, exist_ok=True)
+SETTINGS_FILE = os.path.join(SETTINGS_DIR, "settings.json")
+
 
 LABEL_DEFAULT_SIZE = (2.0, 2.0)  # inches
 
