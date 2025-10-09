@@ -562,7 +562,7 @@ class App:
         # don't auto-start listening, user toggles
         self.build_ui()
         # set window close protocol
-        self.root.protocol('WM_DELETE_WINDOW', self.on_close)
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
 
     def build_ui(self):
         frm = ttk.Frame(self.root, padding=10); frm.grid()
@@ -781,20 +781,27 @@ class App:
         ProductManager(self.root, refresh_cb=self.reload_products)
 
     def on_close(self):
-        # Save important settings on exit
-        self.settings['last_template'] = self.template_var.get() if hasattr(self, 'template_var') else self.settings.get('last_template')
-        self.settings['sell_by'] = self.sellby_var.get() if hasattr(self, 'sellby_var') else self.settings.get('sell_by')
-        self.settings['lot'] = self.lot_var.get() if hasattr(self, 'lot_var') else self.settings.get('lot')
+        # Save current settings before exit
+        self.settings['last_port'] = self.port_var.get()
+        self.settings['last_template'] = self.template_var.get()
+        self.settings['printer_port'] = self.printer_port_var.get()
+        self.settings['printer_baud'] = self.printer_baud_var.get()
+        self.settings['format_mode'] = self.format_mode_var.get()
+        self.settings['templates_dir'] = TEMPLATES_DIR
+
         save_settings(self.settings)
-        try:
-            self.conn.close()
-        except Exception:
-            pass
+
         try:
             self.scale.stop()
         except Exception:
             pass
+        try:
+            self.conn.close()
+        except Exception:
+            pass
+
         self.root.destroy()
+
 
 # --- main ---
 
